@@ -1,8 +1,8 @@
 import { Input as InputNativeBase, IInputProps } from "native-base";
-export function Input({ ...rest }) {
+export function Input({ bg, ...rest }: IInputProps) {
   return (
     <InputNativeBase
-      backgroundColor="gray.700"
+      backgroundColor={bg ? bg : "gray.700"}
       h={14}
       px={4}
       borderWidth={0}
