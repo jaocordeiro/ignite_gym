@@ -59,18 +59,7 @@ export function SignIn() {
 
         <Controller
           control={control}
-          name="name"
-          rules={{ required: "informe o nome!" }}
-          render={({ field: { onChange, value } }) => (
-            <Input placeholder="Nome" onChangeText={onChange} value={value} />
-          )}
-        />
-        <Text color="red.400">{errors.name?.message}</Text>
-
-        <Controller
-          control={control}
           name="email"
-          rules={{ required: "informe o E-mail!" }}
           render={({ field: { onChange, value } }) => (
             <Input
               placeholder="E-mail"
@@ -78,6 +67,7 @@ export function SignIn() {
               autoCapitalize="none"
               onChangeText={onChange}
               value={value}
+              erroMessage={errors.email?.message}
             />
           )}
         />
@@ -92,22 +82,7 @@ export function SignIn() {
               secureTextEntry
               onChangeText={onChange}
               value={value}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="confirmPassword"
-          rules={{ required: "Confirme a senha!" }}
-          render={({ field: { onChange, value } }) => (
-            <Input
-              placeholder="Confirmar Senha"
-              secureTextEntry
-              onChangeText={onChange}
-              value={value}
-              onSubmitEditing={handleSubmit(handleSignUp)}
-              returnKeyType="send"
+              erroMessage={errors.password?.message}
             />
           )}
         />
