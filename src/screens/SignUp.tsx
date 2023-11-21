@@ -50,8 +50,21 @@ export function SignUp() {
     navigation.navigate("SignUp");
   }
 
-  function handleSignUp(data: FormDataProps) {
-    console.log("LOG:(SignIn) - data", data);
+  async function handleSignUp({ name, password, email }: FormDataProps) {
+    const response = await fetch("http://192.168.237.75:3333/users", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        password,
+        email,
+      }),
+    });
+    const data = await response.json();
+    console.log("LOG:(SignUp) - data", data);
   }
 
   return (
