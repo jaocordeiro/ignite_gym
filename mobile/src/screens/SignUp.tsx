@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import {
   VStack,
@@ -20,6 +21,7 @@ import LogoSvg from '@assets/logo.svg'
 import Button from '@components/Button'
 import { Alert } from 'react-native'
 import { AppError } from '@utils/AppError'
+import { useAuth } from '@hooks/useAuth'
 
 type FormDataProps = {
   name: string
@@ -45,8 +47,10 @@ const signUpSchema = yup.object({
 })
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
   const toast = useToast()
+  const { signIn } = useAuth()
 
   function handleGoBack() {
     navigation.navigate('SignIn')
@@ -64,10 +68,13 @@ export function SignUp() {
   }
 
   async function handleSignUp({ name, password, email }: FormDataProps) {
-    console.log('LOG:(SignUp) - name, password, email', name, password, email)
     try {
-      const response = await api.post('/users', { name, password, email })
+      setIsLoading(true)
+      await api.post('/users', { name, password, email })
+      await signIn(email, password)
     } catch (error) {
+      setIsLoading(false)
+
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
@@ -167,7 +174,11 @@ export function SignUp() {
           )}
         />
 
-        <Button title="Criar e Acessar" onPress={handleSubmit(handleSignUp)} />
+        <Button
+          title="Criar e Acessar"
+          onPress={handleSubmit(handleSignUp)}
+          isLoading={isLoading}
+        />
 
         <Button
           title="Voltar para o login"
